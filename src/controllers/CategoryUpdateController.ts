@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
-import { CategoryCreateService } from '../services/CategoryCreateService';
+import { CategoryUpdateService } from '../services/CategoryUpdateService';
 
-export class CategoryCreateController {
-  async hande(request: Request, response: Response) {
+export class CategoryUpdateController {
+  async handle(request: Request, response: Response) {
+    const { uuid } = request.params;
     const { name, description } = request.body;
 
-    const service = new CategoryCreateService();
+    const service = new CategoryUpdateService();
 
-    const result = await service.execute({ name, description });
+    const result = await service.execute({ uuid, name, description });
 
     if (result instanceof Error) {
       const bodyResponse = {
@@ -16,10 +17,9 @@ export class CategoryCreateController {
       };
       return response.status(400).json(bodyResponse);
     }
-
     const bodyResponse = {
       success: true,
-      message: 'Successfully created category.',
+      message: 'Successfully updated category.',
       data: result,
     };
 
