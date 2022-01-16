@@ -14,7 +14,7 @@ export class LoginController {
       message: 'Successfully login user.',
       data: {
         token: result.token,
-        refreseh_token: {
+        refresh_token: {
           uuid: result.refreshToken.uuid,
           expires_in: result.refreshToken.expiresIn,
         },
