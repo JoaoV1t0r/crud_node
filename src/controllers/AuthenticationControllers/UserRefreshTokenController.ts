@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { UserRefreshTokenService } from '../services/UserRefreshTokenService';
+import { UserRefreshTokenService } from '../../services/UserRefreshTokenService';
 
 export class UserRefreshTokenController {
-  async hande(request: Request, response: Response) {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { refresh_token_uuid } = request.body;
 
     const service = new UserRefreshTokenService();

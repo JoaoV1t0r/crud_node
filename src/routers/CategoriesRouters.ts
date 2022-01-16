@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { CategoryDeleteController } from '../controllers/CategoryDeleteController';
-import { CategoriesGetAllController } from '../controllers/CategoriesGetAllController';
-import { CategoryCreateController } from '../controllers/CategoryCreateController';
-import { CategoryUpdateController } from '../controllers/CategoryUpdateController';
+import { CategoryDeleteController } from '../controllers/CategoriesControllers/CategoryDeleteController';
+import { CategoriesGetAllController } from '../controllers/CategoriesControllers/CategoriesGetAllController';
+import { CategoryCreateController } from '../controllers/CategoriesControllers/CategoryCreateController';
+import { CategoryUpdateController } from '../controllers/CategoriesControllers/CategoryUpdateController';
 import isAuthenticated from '../middleware/isAuthenticated';
 
 const categoriesRouters = Router();

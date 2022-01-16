@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CategoryCreateService } from '../services/CategoryCreateService';
+import { CategoryCreateService } from '../../Domains/Categories/Concrete/CategoryCreateService';
 
 export class CategoryCreateController {
   async hande(request: Request, response: Response) {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { CategoryCreateService } from '../services/CategoryCreateService';
-import { VideosCreateService } from '../services/VideosCreateService';
+import { CategoryCreateService } from '../../Domains/Categories/Concrete/CategoryCreateService';
+import { VideosCreateService } from '../../services/VideosCreateService';
 
 export class VideosCreateController {
   async handle(request: Request, response: Response) {

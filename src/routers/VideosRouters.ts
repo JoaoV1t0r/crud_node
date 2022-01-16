@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { VideoGetAllController } from '../controllers/VideoGetAllController';
-import { VideosCreateController } from '../controllers/VideosCreateController';
+import { VideoGetAllController } from '../controllers/VideosControllers/VideoGetAllController';
+import { VideosCreateController } from '../controllers/VideosControllers/VideosCreateController';
 import isAuthenticated from '../middleware/isAuthenticated';
 
 const videosRouter = Router();
