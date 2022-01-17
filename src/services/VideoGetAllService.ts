@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { Videos } from '../entities/Videos';
+import { Videos } from '../Entities/Videos';
 
 export class VideoGetAllService {
   async execute() {

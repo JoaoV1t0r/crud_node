@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { CategoryCreateService } from '../../Domains/Categories/Concrete/CategoryCreateService';
 import { VideosCreateService } from '../../services/VideosCreateService';
 
 export class VideosCreateController {

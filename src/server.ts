@@ -1,11 +1,10 @@
 import 'express-async-errors';
 import 'reflect-metadata';
 import express, { Response, NextFunction, Request } from 'express';
-import './database';
-import { router } from './routes';
-import { categoriesRouters } from './routers/CategoriesRouters';
-import { videosRouter } from './routers/VideosRouters';
-import { authenticatedRouter } from './routers/AuthenticatedRouters';
+import './Database';
+import { categoriesRouters } from './Routers/CategoriesRouters';
+import { videosRouter } from './Routers/VideosRouters';
+import { authenticatedRouter } from './Routers/AuthenticatedRouters';
 
 const app = express();
 

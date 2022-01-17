@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { getRepository } from 'typeorm';
-import { RefreshToken } from '../entities/RefreshToken';
+import { RefreshToken } from '../Entities/RefreshToken';
 
 export class RefreshTokenGenerationService {
   async execute(userId: number): Promise<RefreshToken> {

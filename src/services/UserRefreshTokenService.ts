@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { RefreshTokenGenerationService } from './RefreshTokenGenerationService';
-import { RefreshToken } from '../entities/RefreshToken';
+import { RefreshToken } from '../Entities/RefreshToken';
 import dayjs from 'dayjs';
 
 export class UserRefreshTokenService {

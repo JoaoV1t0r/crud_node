@@ -1,6 +1,6 @@
 import { hash } from 'bcrypt';
 import { getRepository } from 'typeorm';
-import { Users } from '../entities/Users';
+import { Users } from '../Entities/Users';
 
 type UserRequest = {
   name: string;

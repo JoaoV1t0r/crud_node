@@ -1,9 +1,9 @@
 import { compare } from 'bcrypt';
 import { getRepository } from 'typeorm';
-import { Users } from '../entities/Users';
+import { Users } from '../Entities/Users';
 import { sign } from 'jsonwebtoken';
 import { RefreshTokenGenerationService } from './RefreshTokenGenerationService';
-import { RefreshToken } from '../entities/RefreshToken';
+import { RefreshToken } from '../Entities/RefreshToken';
 
 type UserRequest = {
   email: string;
