@@ -6,7 +6,7 @@ import isAuthenticated from '../Middleware/isAuthenticated';
 
 const authenticatedRouter = Router();
 
-authenticatedRouter.use(isAuthenticated);
+// authenticatedRouter.use(isAuthenticated);
 
 authenticatedRouter.post('/users', new UserCreateController().handle);
 authenticatedRouter.post('/login', new LoginController().handle);
