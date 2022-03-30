@@ -1,25 +1,26 @@
 import 'express-async-errors';
 import 'reflect-metadata';
-import express, { Response, NextFunction, Request } from 'express';
 import './Database';
-import { categoriesRouters } from './Routers/CategoriesRouters';
-import { videosRouter } from './Routers/VideosRouters';
-import { authenticatedRouter } from './Routers/AuthenticatedRouters';
+import './Controllers/CategoryController';
+import * as bodyParser from 'body-parser';
+import express, { Response, NextFunction, Request } from 'express';
+import { InversifyExpressServer } from 'inversify-express-utils';
+import DiContainer from './DependencyInjection/DiContainer';
 
-const app = express();
+export const server = new InversifyExpressServer(DiContainer.configure());
 
-app.use(express.json());
+server.setConfig((app) => {
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
 
-app.use('/categories', categoriesRouters);
-app.use('/videos', videosRouter);
+  app.use(express.json());
 
-app.use(authenticatedRouter);
-
-app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
-  return response.json({
-    success: false,
-    message: error.message,
+  app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
+    return response.json({
+      success: false,
+      message: error.message,
+    });
   });
 });
 
-app.listen(3000, () => console.log('Server is runing'));
+server.build().listen(3000, () => console.log('Server is runing'));

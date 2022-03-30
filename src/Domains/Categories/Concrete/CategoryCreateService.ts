@@ -1,25 +1,17 @@
-import { getRepository } from 'typeorm';
+import { injectable } from 'inversify';
 import { CategoryRepository } from '../../../Database/Repositories/Concrete/CategoryRepository';
 import { ICategoryRepository } from '../../../Database/Repositories/Interfaces/ICategoryRepository';
 import { Category } from '../../../Entities/Category';
 import { ICategoriesCreateService } from '../Interfaces/ICategoriesCreateService';
 import { CategoryRequestModel } from '../Models/CategoryModelRequest';
-
+@injectable()
 export class CategoryCreateService implements ICategoriesCreateService {
   categoryRepository: ICategoryRepository;
   category: Category;
   request: CategoryRequestModel;
 
-  constructor(categoryRepository: ICategoryRepository) {
-    this.categoryRepository = categoryRepository;
-  }
-
-  static build() {
-    const categoryRepository = CategoryRepository.build();
-    return new CategoryCreateService(categoryRepository);
-  }
-
   async execute(request: CategoryRequestModel): Promise<Category> {
+    this.categoryRepository = new CategoryRepository();
     this.request = request;
 
     await this.validCategoryExists();

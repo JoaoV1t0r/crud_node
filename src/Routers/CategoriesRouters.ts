@@ -8,8 +8,6 @@ import isAuthenticated from '../Middleware/isAuthenticated';
 const categoriesRouters = Router();
 
 categoriesRouters.use(isAuthenticated);
-
-categoriesRouters.post('/', new CategoryCreateController().handle);
 categoriesRouters.get('/', new CategoriesGetAllController().handle);
 categoriesRouters.delete('/:uuid', new CategoryDeleteController().handle);
 categoriesRouters.put('/:uuid', new CategoryUpdateController().handle);
