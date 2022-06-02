@@ -16,8 +16,17 @@ export class Companies {
   @Column({ name: 'name' })
   name: string;
 
+  @Column({ name: 'email' })
+  email: string;
+
   @Column({ name: 'created_at' })
   created_at: Date;
+
+  @Column({ name: 'password'})
+  password: string;
+
+  @Column({ name: 'company_id', nullable: true})
+  company_id: string;
 
   constructor() {
     if (!this.uuid) {
