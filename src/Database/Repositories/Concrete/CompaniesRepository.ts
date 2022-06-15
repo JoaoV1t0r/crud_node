@@ -63,19 +63,19 @@ export class CompaniesRepository implements ICompaniesRepository {
         },
         data : JSON.stringify(data)
     };
-
+    const rresponse: any = {}
     axios(config).then(function (response) {
       console.log(response.data);
-      return(response.data)
+      const rresponse = response.data
     })
     .catch(function (error) {
       console.log('ocorreu um erro em sendCompanyAndGetCompany_id:', error);
-      return (error)
+      const rresponse = error
     });
-    return company
+    return rresponse
   }
 
-  async send_base(company: Companies, data: any): Promise<Companies>{
+  async send_base(data: any): Promise<Companies>{
     const upload = multer({
       dest: './uploads/',
     });

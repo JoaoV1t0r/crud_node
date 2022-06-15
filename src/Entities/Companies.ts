@@ -25,7 +25,7 @@ export class Companies {
   @Column({ name: 'password'})
   password: string;
 
-  @Column({ name: 'company_id', nullable: true})
+  @Column({ name: 'company_id'})
   company_id: string;
 
   constructor() {
