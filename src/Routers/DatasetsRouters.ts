@@ -9,32 +9,47 @@ datasetsRouter.use(isAuthenticated);
 
 datasetsRouter.post('/createDatabase', async (req, res) => {
   try {
-    db.createDatabase(req.body.company_id)
-    return(res.status(200))
+    await db.createDatabase(req.body.company_id)
+    return res.json({
+      message: 'Sucess at /createDatabase'
+    })
   }
   catch(error){
-    throw new Error('An error has happened in the createDatabase function.')
+    return res.json({
+      message: 'Error at /createDatabase',
+      error: error
+    })
   }
 });
 
 datasetsRouter.post('/sendIncrement', async (req, res) => {
   try {
-    db.sendIncrement(req.body.company_id, req.body.files)
-    return(res.status(200))
+    await db.sendIncrement(req.body.company_id, req.body.files)
+    return res.json({
+      message: 'Sucess at /sendIncrement'
+    })
   }
   catch(error){
-    throw new Error('An error has happened in the sendIncrement function.')
+    return res.json({
+      message: 'Error at /sendIncrement',
+      error: error
+    })
   }
 })
 
 datasetsRouter.get('/getStatusFromModel', async (req, res) => {
   try{
+    const status = await db.getStatusFromModel(req.body.model_id)
     return res.json({
-      model_status: db.getStatusFromModel(req.body.model_id)
+      message: 'Sucess at at /getStatusFromModel',
+      model_status: status
     }).status(200)
   }
   catch(error){
-    throw new Error('An error has happened in the getStatusFromModel function.')
+    return res.json({
+      message: 'Error at /getStatusFromModel',
+      error: error
+    })
   }
 })
 

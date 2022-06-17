@@ -29,7 +29,7 @@ export class CompaniesRepository implements ICompaniesRepository {
     return await this.companiesRepository.findOne({ cnpj: cnpjCompany });
   }
 
-  async deleteCompany(cnpjCompany: string): Promise<Companies>{
+  async deleteCompany(cnpjCompany: string): Promise<void>{
     this.setRepository();
     const pk = cnpjCompany.substring(1, cnpjCompany.length)
     const aimedCompany = await this.companiesRepository.findOne({ cnpj: pk})

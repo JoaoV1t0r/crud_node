@@ -8,19 +8,31 @@ filesRouter.use(isAuthenticated);
 
 filesRouter.get('/getInfo', async (req, res) => {
     try{
-        await db.getFileInformationByCnpj(req.body.cnpj)
-        return res.send(200)
+        const info = await db.getFileInformationByCnpj(req.body.cnpj)
+        return res.json({
+            message: 'Sucess at /getInfo',
+            info: info
+        })
     }
-    catch{
-        throw new Error('An error has happened in the getFileInformation function')
+    catch(error){
+        return res.json({
+            message: 'Error at /getInfo',
+            error: error
+        })
     }
 }) 
 
 filesRouter.post('/saveInfo', async (req, res) => {
     try{
-        db.saveInfoFromFile(req.body.data)
+        await db.saveInfoFromFile(req.body.data)
+        return res.json({
+            message: 'Sucess at /saveInfo'
+        })
     }
-    catch{
-        throw new Error('An error has happened in the saveInfoFromFile function')
+    catch(error){
+        return res.json({
+            message: 'Error at /saveInfo',
+            error: error
+        })
     }
 })

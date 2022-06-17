@@ -46,7 +46,7 @@ export class DatasetsRepository implements IDatasetsRepository {
           return 
     }
 
-  async sendIncrement(file: any, id: string): Promise<Datasets> {
+  async sendIncrement(file: any, id: string): Promise<void> {
     this.setRepository();
     const upload = multer({
         dest: './uploads/',
