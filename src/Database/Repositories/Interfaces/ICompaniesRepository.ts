@@ -6,8 +6,8 @@ export interface ICompaniesRepository {
   getCompanyByCnpj(cnpjCompany: string): Promise<Companies>;
   createCompany(company: Companies): Promise<Companies>;
   setRepository(): void;
-  deleteCompany(cnpjCompany: string): Promise<void>;
-  patchCompany(cnpjCompany: string, newData: object): Promise<Companies>;
+  deleteCompany(cnpjCompany: string): Promise<boolean>;
+  patchCompany(cnpjCompany: string, newData: object): Promise<boolean>;
   sendCompanyAndGetCompany_id(company: Companies): Promise<Companies>;
-  send_base(data: any): Promise<Companies>
+  send_base(data: any): Promise<boolean>
 }

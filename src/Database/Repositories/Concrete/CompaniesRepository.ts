@@ -26,23 +26,54 @@ export class CompaniesRepository implements ICompaniesRepository {
 
   async getCompanyByCnpj(cnpjCompany: string): Promise<Companies> {
     this.setRepository();
+    let key = cnpjCompany
+    if (cnpjCompany.indexOf(":") !== -1){
+      const substring = cnpjCompany.indexOf(":");
+      const fh = cnpjCompany.slice(0, substring);
+      const sh = cnpjCompany.slice(substring + 1);
+      key = (fh + sh)  
+    }
     return await this.companiesRepository.findOne({ cnpj: cnpjCompany });
   }
 
-  async deleteCompany(cnpjCompany: string): Promise<void>{
+  async deleteCompany(cnpjCompany: string): Promise<boolean>{
     this.setRepository();
-    const pk = cnpjCompany.substring(1, cnpjCompany.length)
-    const aimedCompany = await this.companiesRepository.findOne({ cnpj: pk})
-    await this.companiesRepository.remove(aimedCompany)
-    return
+    let result: boolean = true
+    let key = cnpjCompany
+    if (cnpjCompany.indexOf(":") !== -1){
+      const substring = cnpjCompany.indexOf(":");
+      const fh = cnpjCompany.slice(0, substring);
+      const sh = cnpjCompany.slice(substring + 1);
+      key = (fh + sh)  
+    }
+    try{
+      const aimedCompany = await this.companiesRepository.findOne({ cnpj: key})
+      await this.companiesRepository.remove(aimedCompany)
+    }
+    catch(error){
+      result = false
+    }
+    return result
   }
 
-  async patchCompany(cnpjCompany: string, newData: object): Promise<Companies>{
+  async patchCompany(cnpjCompany: string, newData: object): Promise<boolean>{
     this.setRepository();
-    const pk = cnpjCompany.substring(1, cnpjCompany.length)
-    const aimedCompany = await this.companiesRepository.findOne({ cnpj: pk})
-    await this.companiesRepository.update(aimedCompany, newData)
-    return 
+    let result: boolean = true;
+    let key = cnpjCompany;
+    if (cnpjCompany.indexOf(":") !== -1){
+      const substring = cnpjCompany.indexOf(":");
+      const fh = cnpjCompany.slice(0, substring);
+      const sh = cnpjCompany.slice(substring + 1);
+      key = (fh + sh)  
+    }
+    try{
+      const aimedCompany = await this.companiesRepository.findOne({ cnpj: key})
+      await this.companiesRepository.update(aimedCompany, newData)
+    }
+    catch(error){
+      result = false
+    }
+    return result
   }
 
   //após usar isso para o envio, o dado recebido deve ser adicionado no banco usando o patch  
@@ -75,7 +106,8 @@ export class CompaniesRepository implements ICompaniesRepository {
     return rresponse
   }
 
-  async send_base(data: any): Promise<Companies>{
+  async send_base(data: any): Promise<boolean>{
+    let result: boolean = true;
     const upload = multer({
       dest: './uploads/',
     });
@@ -94,12 +126,11 @@ export class CompaniesRepository implements ICompaniesRepository {
     axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
-      return response
     })
     .catch(function (error) {
       console.log(error);
-      return error
+      result = false
     });
-    return
+    return result
   }
 }

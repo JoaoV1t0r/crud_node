@@ -15,15 +15,26 @@ export class FilesRepository implements IFilesRepository {
 
   async getFileInformationByCnpj(aimedCnpj: string): Promise<Files> {
     this.setRepository();
-    return await this.filesRepository.findOne({ cnpj: aimedCnpj });
+    let key = aimedCnpj
+    if (aimedCnpj.indexOf(":") !== -1){
+      const substring = aimedCnpj.indexOf(":");
+      const fh = aimedCnpj.slice(0, substring);
+      const sh = aimedCnpj.slice(substring + 1);
+      key = (fh + sh)  
+    }
+    return await this.filesRepository.findOne({ cnpj: key });
   }
 
-  async saveInfoFromFile(file: Files): Promise<Files> {
+  async saveInfoFromFile(file: Files): Promise<boolean> {
     this.setRepository();
-    const newFile = this.filesRepository.create(file);
-
-    await this.filesRepository.save(newFile);
-
-    return newFile;
+    let result: boolean = true
+    try{
+      const newFile = this.filesRepository.create(file);
+      await this.filesRepository.save(newFile);
+    }
+    catch(error){
+      result = false
+    }
+    return result
   }
 }

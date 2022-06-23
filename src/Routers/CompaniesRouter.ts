@@ -4,11 +4,11 @@ import { CompaniesRepository } from '../Database/Repositories/Concrete/Companies
 
 const db = new CompaniesRepository()
 const companiesRouter = Router();
-companiesRouter.use(isAuthenticated);
+//companiesRouter.use(isAuthenticated);
 
 companiesRouter.get('/getCompany', async (req, res) => {
     try{
-        const company = db.getCompanyByCnpj(req.body.cnpjCompany)
+        const company = await db.getCompanyByCnpj(req.body.cnpjCompany)
         return res.json({
             company: company,
             message: 'Sucess at /getCompany'
@@ -25,7 +25,7 @@ companiesRouter.get('/getCompany', async (req, res) => {
 companiesRouter.post('/createCompany', async (req, res) => {
     try{
         const company = await db.sendCompanyAndGetCompany_id(req.body.companyData)
-        db.createCompany(company)
+        await db.createCompany(company)
         return res.json({
             message: 'Sucess at /createCompany'
         }).status(200)
@@ -40,10 +40,16 @@ companiesRouter.post('/createCompany', async (req, res) => {
 
 companiesRouter.delete('/deleteCompany', async (req, res) => {
     try{
-        await db.deleteCompany(req.body.cnpj)
-        return res.json({
-            message: 'Sucess at /deleteCompany'
-        })
+        if(await db.deleteCompany(req.body.cnpj) === true){
+            return res.json({
+                message: 'Sucess at /deleteCompany'
+            }).status(200)
+        }
+        else if(await db.deleteCompany(req.body.cnpj) === false){
+            return res.json({
+                message: 'Error at /deleteCompany. '
+            }).status(404)
+        }
     }
     catch(error){
         return res.json({
@@ -55,11 +61,17 @@ companiesRouter.delete('/deleteCompany', async (req, res) => {
 
 companiesRouter.put('/patchCompany', async (req, res) => {
     try{
-       await db.patchCompany(req.body.cnpj, req.body.companyData)
-       return res.json({
+       if (await db.patchCompany(req.body.cnpj, req.body.companyData) === true){
+        return res.json({
             message:'Sucess at /patchCompany',
             dataInserted: req.body.companyData
        }).status(200)
+       }
+       else if (await db.patchCompany(req.body.cnpj, req.body.companyData) === false){
+        return res.json({
+            message: 'Error at /patchCompany'
+        }).status(404)
+       }
     }
     catch(error){
         return res.json({
@@ -71,10 +83,16 @@ companiesRouter.put('/patchCompany', async (req, res) => {
 
 companiesRouter.post('/send_base', async (req, res) => {
     try{
-        await db.send_base(req.body.data)
-        return res.json({
-            message: 'Sucess at /send_base'
-        }).status(200)
+        if(await db.send_base(req.body.data) === true){
+            return res.json({
+                message: 'Sucess at /send_base'
+            }).status(200)
+        }
+        else if(await db.send_base(req.body.data) === false){
+            return res.json({
+                message: 'error at /send_base'
+            })
+        }
     }
     catch(error){
         return res.json({

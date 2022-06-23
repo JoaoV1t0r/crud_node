@@ -16,9 +16,9 @@ export class DatasetsRepository implements IDatasetsRepository {
     this.datasetsRepository = getRepository(Datasets);
   }
 
-  async createDatabase(Id: string): Promise<Datasets> {
+  async createDatabase(Id: string): Promise<boolean> {
     this.setRepository();
-
+    let send: boolean;
         const data = {
             window: "3",
             step: "1",
@@ -37,17 +37,20 @@ export class DatasetsRepository implements IDatasetsRepository {
           axios(config)
           .then(function (response) {
             console.log(JSON.stringify(response.data));
+            send = true
             return('Sucess')
           })
           .catch(function (error) {
+            send = false
             console.log(error);
             return('Error')
           });
-          return 
+          return send
     }
 
-  async sendIncrement(file: any, id: string): Promise<void> {
+  async sendIncrement(file: any, id: string): Promise<boolean> {
     this.setRepository();
+    let result: boolean; 
     const upload = multer({
         dest: './uploads/',
       });
@@ -63,11 +66,13 @@ export class DatasetsRepository implements IDatasetsRepository {
     axios(config)
     .then(function (response) {
     console.log(JSON.stringify(response.data));
+    result = true
     })
     .catch(function (error) {
     console.log(error);
+    result = false
     });
-    return
+    return result
   }
 
   async getStatusFromModel(id: string): Promise<Object> {

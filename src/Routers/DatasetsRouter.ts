@@ -5,29 +5,46 @@ import { DatasetsRepository } from '../Database/Repositories/Concrete/DatasetsRe
 const db = new DatasetsRepository()
 const datasetsRouter = Router();
 
-datasetsRouter.use(isAuthenticated);
+//datasetsRouter.use(isAuthenticated);
 
 datasetsRouter.post('/createDatabase', async (req, res) => {
+  let send: boolean
   try {
-    await db.createDatabase(req.body.company_id)
-    return res.json({
-      message: 'Sucess at /createDatabase'
-    })
+    send = await db.createDatabase(req.body.company_id)
+    if(send === true){
+      return res.json({
+        message: 'Sucess at /createDatabase'
+      }).status(200)
+    }
+    else if(send === false){
+      return res.json({
+        message: 'Error at /createDatabase'
+      }).status(400)
+    }
+    
   }
   catch(error){
     return res.json({
       message: 'Error at /createDatabase',
       error: error
-    })
+    }).status(400)
   }
 });
 
 datasetsRouter.post('/sendIncrement', async (req, res) => {
+  let send: boolean
   try {
-    await db.sendIncrement(req.body.company_id, req.body.files)
-    return res.json({
-      message: 'Sucess at /sendIncrement'
-    })
+    send = await db.sendIncrement(req.body.company_id, req.body.files)
+    if (send === true){
+      return res.json({
+        message: 'Sucess at /sendIncrement'
+      }).status(200)
+    }
+    else if (send === false){
+      return res.json({
+        message: 'Error at /sendIncrement'
+      }).status(400)
+    }
   }
   catch(error){
     return res.json({
