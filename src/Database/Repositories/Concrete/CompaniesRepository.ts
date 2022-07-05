@@ -3,6 +3,7 @@ import { Companies } from '../../../Entities/Companies';
 import { ICompaniesRepository } from '../Interfaces/ICompaniesRepository';
 import axios from 'axios';
 import multer from 'multer';
+import { CompanyData } from '../Interfaces/ICompanyData';
 
 export class CompaniesRepository implements ICompaniesRepository {
   companiesRepository: Repository<Companies>;
@@ -16,12 +17,21 @@ export class CompaniesRepository implements ICompaniesRepository {
   }
 
   async createCompany(company: Companies): Promise<Companies> {
-    this.setRepository();
+    //this.setRepository();
     const newCompany = this.companiesRepository.create(company);
 
     await this.companiesRepository.save(newCompany);
 
     return newCompany;
+  }
+//*Apagar o TestcreateCompany depois
+  async TestcreateCompany(company: any): Promise<any> {
+    //this.setRepository();
+    //const newCompany = this.companiesRepository.create(company);
+
+    //await this.companiesRepository.save(newCompany);
+
+    return company;
   }
 
   async getCompanyByCnpj(cnpjCompany: string): Promise<Companies> {
@@ -33,7 +43,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       const sh = cnpjCompany.slice(substring + 1);
       key = (fh + sh)  
     }
-    return await this.companiesRepository.findOne({ cnpj: cnpjCompany });
+    return await this.companiesRepository.findOne({ cnpj: key });
   }
 
   async deleteCompany(cnpjCompany: string): Promise<boolean>{
@@ -77,8 +87,8 @@ export class CompaniesRepository implements ICompaniesRepository {
   }
 
   //após usar isso para o envio, o dado recebido deve ser adicionado no banco usando o patch  
-  async sendCompanyAndGetCompany_id(company: Companies): Promise<Companies> {
-    this.setRepository();
+  async sendCompanyAndGetCompany_id(company: Companies): Promise<CompanyData> {
+
     const data = {
         name: company.name,
         cnpj: company.cnpj,
@@ -94,16 +104,14 @@ export class CompaniesRepository implements ICompaniesRepository {
         },
         data : JSON.stringify(data)
     };
-    const rresponse: any = {}
-    axios(config).then(function (response) {
-      console.log(response.data);
-      const rresponse = response.data
+
+    const response = axios(config).then(function (response) {
+      return response.data
     })
     .catch(function (error) {
-      console.log('ocorreu um erro em sendCompanyAndGetCompany_id:', error);
-      const rresponse = error
+      return error.status
     });
-    return rresponse
+    return response
   }
 
   async send_base(data: any): Promise<boolean>{

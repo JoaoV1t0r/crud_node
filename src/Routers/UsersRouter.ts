@@ -63,9 +63,9 @@ passport.use(new GoogleStrategy({
 ))
 
 usersRouter.get('/logout', (req, res) => {
-    req.session.destroy();
-    console.log('Logout efetuado com sucesso.');
-    })
+  req.session.destroy();
+  console.log('Logout efetuado com sucesso.');
+})
   
 usersRouter.get('/user', async (req, res) => {
   console.log('session:', req.user)

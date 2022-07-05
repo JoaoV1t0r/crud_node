@@ -23,18 +23,31 @@ companiesRouter.get('/getCompany', async (req, res) => {
 })
 
 companiesRouter.post('/createCompany', async (req, res) => {
+    //console.log(req.body.companyData)
     try{
+        //await db.TestcreateCompany(req.body.companyData)
         const company = await db.sendCompanyAndGetCompany_id(req.body.companyData)
-        await db.createCompany(company)
+        /*await db.createCompany({
+           name: company.data.name,
+           cnpj: company.data.cnpj,
+           email: company.data.email,
+           password: company.data.password,
+           company_id: company.data.id,
+           id: null,
+           uuid: null,
+           created_at: null
+        })*/
+        //console.log(company)
         return res.json({
-            message: 'Sucess at /createCompany'
+            message: 'Sucess at /createCompany',
+            returnFromFunction: company
         }).status(200)
     }
     catch(error){
         return res.json({
             error: error,
             message: 'Error at /createCompany'
-        })
+        }).status(400)
     }
 })
 
