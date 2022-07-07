@@ -4,7 +4,7 @@ import { ICompaniesRepository } from '../Interfaces/ICompaniesRepository';
 import axios from 'axios';
 import multer from 'multer';
 import { CompanyData } from '../Interfaces/ICompanyData';
-
+import { AppDataSource } from '../../../../index';
 export class CompaniesRepository implements ICompaniesRepository {
   companiesRepository: Repository<Companies>;
 
@@ -13,16 +13,21 @@ export class CompaniesRepository implements ICompaniesRepository {
   }
 
   setRepository(): void {
-    this.companiesRepository = getRepository(Companies);
+    this.companiesRepository = AppDataSource.getRepository(Companies);
   }
 
-  async createCompany(company: Companies): Promise<Companies> {
+  async createCompany(company: object): Promise<Companies> {
     //this.setRepository();
-    const newCompany = this.companiesRepository.create(company);
-
-    await this.companiesRepository.save(newCompany);
-
-    return newCompany;
+    console.log(company);
+    try {
+      console.log('Estou no try{} do repo');
+      const newCompany = this.companiesRepository.create(company);
+      console.log('newCompany = ', newCompany);
+      await this.companiesRepository.save(newCompany);
+      return;
+    } catch (err) {
+      return err;
+    }
   }
   //*Apagar o TestcreateCompany depois
   async TestcreateCompany(company: any): Promise<any> {
@@ -43,7 +48,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       const sh = cnpjCompany.slice(substring + 1);
       key = fh + sh;
     }
-    return await this.companiesRepository.findOne({ cnpj: key });
+    return await this.companiesRepository.findOneBy({ cnpj: key });
   }
 
   async deleteCompany(cnpjCompany: string): Promise<boolean> {
@@ -57,7 +62,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       key = fh + sh;
     }
     try {
-      const aimedCompany = await this.companiesRepository.findOne({ cnpj: key });
+      const aimedCompany = await this.companiesRepository.findOneBy({ cnpj: key });
       await this.companiesRepository.remove(aimedCompany);
     } catch (error) {
       result = false;
@@ -76,7 +81,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       key = fh + sh;
     }
     try {
-      const aimedCompany = await this.companiesRepository.findOne({ cnpj: key });
+      const aimedCompany = await this.companiesRepository.findOneBy({ cnpj: key });
       await this.companiesRepository.update(aimedCompany, newData);
     } catch (error) {
       result = false;

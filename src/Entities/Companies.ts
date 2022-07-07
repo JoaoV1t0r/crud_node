@@ -1,6 +1,5 @@
-import { Column, Entity,  PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-
 
 @Entity('Companies')
 export class Companies {
@@ -19,18 +18,9 @@ export class Companies {
   @Column({ name: 'email' })
   email: string;
 
-  @Column({ name: 'created_at' })
-  created_at: Date;
-
-  @Column({ name: 'password'})
+  @Column({ name: 'password' })
   password: string;
 
-  @Column({ name: 'company_id'})
+  @Column({ name: 'company_id' })
   company_id: string;
-
-  constructor() {
-    if (!this.uuid) {
-      this.uuid = uuid();
-    }
-  }
 }
