@@ -43,7 +43,7 @@ companiesRouter.post('/createCompany', async (req, res) => {
     return res
       .json({
         message: 'Sucess at /createCompany',
-        returnFromFunction: company,
+        returnFromFunction: dbcompany,
       })
       .status(200);
   } catch (error) {

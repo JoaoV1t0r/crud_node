@@ -17,26 +17,14 @@ export class CompaniesRepository implements ICompaniesRepository {
   }
 
   async createCompany(company: object): Promise<Companies> {
-    //this.setRepository();
-    console.log(company);
+    this.setRepository();
     try {
-      console.log('Estou no try{} do repo');
       const newCompany = this.companiesRepository.create(company);
-      console.log('newCompany = ', newCompany);
       await this.companiesRepository.save(newCompany);
-      return;
+      return newCompany;
     } catch (err) {
       return err;
     }
-  }
-  //*Apagar o TestcreateCompany depois
-  async TestcreateCompany(company: any): Promise<any> {
-    //this.setRepository();
-    //const newCompany = this.companiesRepository.create(company);
-
-    //await this.companiesRepository.save(newCompany);
-
-    return company;
   }
 
   async getCompanyByCnpj(cnpjCompany: string): Promise<Companies> {
@@ -84,6 +72,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       const aimedCompany = await this.companiesRepository.findOneBy({ cnpj: key });
       await this.companiesRepository.update(aimedCompany, newData);
     } catch (error) {
+      console.log(error);
       result = false;
     }
     return result;

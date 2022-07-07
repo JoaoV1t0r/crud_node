@@ -1,6 +1,7 @@
 import { getRepository, Repository, createConnection } from 'typeorm';
 import { Files } from '../../../Entities/Files';
 import { IFilesRepository } from '../Interfaces/IFilesRepository';
+import { AppDataSource } from '../../../../index';
 
 export class FilesRepository implements IFilesRepository {
   filesRepository: Repository<Files>;
@@ -10,7 +11,7 @@ export class FilesRepository implements IFilesRepository {
   }
 
   setRepository(): void {
-    this.filesRepository = getRepository(Files);
+    this.filesRepository = AppDataSource.getRepository(Files);
   }
 
   async getFileInformationByCnpj(aimedCnpj: string): Promise<Files> {
