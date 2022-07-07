@@ -12,11 +12,17 @@ export class Users {
   @Column({ name: 'name', type: 'varchar' })
   name: string;
 
+  @Column({ name: 'idOauth', type: 'varchar', nullable: true })
+  idOauth: string;
+
   @Column({ name: 'email', type: 'varchar' })
   email: string;
 
-  @Column({ name: 'password', type: 'varchar' })
+  @Column({ name: 'password', type: 'varchar', nullable: true })
   password: string;
+
+  @Column({ name: 'issuer', type: 'varchar', nullable: true })
+  issuer: string;
 
   @Column({ name: 'created_at' })
   created_at: Date;
