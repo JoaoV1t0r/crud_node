@@ -39,6 +39,12 @@ export class CompaniesRepository implements ICompaniesRepository {
     return await this.companiesRepository.findOneBy({ cnpj: key });
   }
 
+  async getAllCompanies(): Promise<any> {
+    this.setRepository();
+    const allCompanies = await this.companiesRepository.find();
+    return allCompanies;
+  }
+
   async deleteCompany(cnpjCompany: string): Promise<boolean> {
     this.setRepository();
     let result: boolean = true;

@@ -9,5 +9,6 @@ export interface ICompaniesRepository {
   deleteCompany(cnpjCompany: string): Promise<boolean>;
   patchCompany(cnpjCompany: string, newData: object): Promise<boolean>;
   sendCompanyAndGetCompany_id(company: Companies): Promise<object>;
-  send_base(data: any): Promise<boolean>
+  send_base(data: any): Promise<boolean>;
+  getAllCompanies(): Promise<any>;
 }

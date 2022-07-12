@@ -23,7 +23,7 @@ export const AppDataSource = new DataSource({
   username: 'postgres',
   password: 'urasawa',
   database: 'sistema',
-  entities: [Companies, Files, Datasets /*Users*/],
+  entities: [Companies, Files, Datasets /*, Users*/],
   synchronize: true,
 });
 
@@ -41,7 +41,7 @@ AppDataSource.initialize()
     app.use('/companies', companiesRouter);
     app.use('/files', filesRouter);
     app.use('/datasets', datasetsRouter);
-    //app.use("/users", usersRouter) não funcional por enquanto
+    app.use('/users', usersRouter);
 
     app.listen(3002, () => {
       console.log('running on 3002');

@@ -26,6 +26,21 @@ companiesRouter.get('/getCompany', async (req, res) => {
   }
 });
 
+companiesRouter.get('/getAllCompanies', async (req, res) => {
+  try {
+    const allCompanies = await db.getAllCompanies();
+    return res.json({
+      companies: allCompanies,
+      message: 'Sucess at /getAllCompanies',
+    });
+  } catch (error) {
+    return res.json({
+      returnFromFunction: error,
+      message: 'Sucess at /getAllCompanies',
+    });
+  }
+});
+
 companiesRouter.post('/createCompany', async (req, res) => {
   //console.log(req.body.companyData)
   try {
