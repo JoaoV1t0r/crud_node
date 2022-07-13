@@ -33,6 +33,7 @@ export class UserRepository implements IUserRepository {
       const newUser = this.userRepository.create(user);
       await this.userRepository.save(newUser);
     } catch (error) {
+      console.log(error);
       result = false;
     }
     return result;

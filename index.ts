@@ -23,7 +23,7 @@ export const AppDataSource = new DataSource({
   username: 'postgres',
   password: 'urasawa',
   database: 'sistema',
-  entities: [Companies, Files, Datasets /*, Users*/],
+  entities: [Companies, Files, Datasets, Users],
   synchronize: true,
 });
 

@@ -24,9 +24,6 @@ export class Users {
   @Column({ name: 'issuer', type: 'varchar', nullable: true })
   issuer: string;
 
-  @Column({ name: 'created_at' })
-  created_at: Date;
-
   constructor() {
     if (!this.uuid) {
       this.uuid = uuid();

@@ -41,10 +41,10 @@ passport.use(
       callbackURL: 'http://localhost:3002/users/google/callback',
     },
     async function verify(issuer, profile, cb) {
-      console.log('profile: ', profile, '\nissuer: ', issuer);
+      //console.log('profile: ', profile, '\nissuer: ', issuer);
       try {
         const user = await db.getUserByEmail(profile.emails[0].value);
-        //console.log('Usuário encontrado: ', user)
+        console.log('Usuário encontrado: ', user);
         if (!user) {
           await db.createUser({
             idOauth: profile.id,
@@ -70,11 +70,14 @@ usersRouter.get(
   }),
 );
 
-usersRouter.get('/logout', (req, res) => {
-  req.session.destroy(function (err) {
-    console.log(err);
-  });
-  console.log('Logout efetuado com sucesso.');
+usersRouter.get('/logout', async (req, res) => {
+  if (req.session !== null || undefined) {
+    req.session.destroy(function (err) {
+      console.log(err);
+    });
+    console.log('Logout efetuado com sucesso.');
+    res.send(`logout efetuado com sucesso, Session: ${req.session}`);
+  }
 });
 usersRouter.get('/login', (req, res) => {
   res.send('<a href="auth/google">Autenticação com Google</a>');
@@ -83,8 +86,11 @@ usersRouter.get('/login', (req, res) => {
 usersRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 usersRouter.get('/user', async (req, res) => {
-  const user = req.session.passport.user;
-  res.send(user);
+  if (req.session.passport.user !== undefined) {
+    const user = req.session.passport.user;
+    res.send(user);
+  }
+  return;
 });
 
 /* Endpoint usado no sistema anterior para devolver dados do usuário armazenados na sessão
