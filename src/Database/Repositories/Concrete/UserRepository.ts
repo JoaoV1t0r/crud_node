@@ -58,10 +58,14 @@ export class UserRepository implements IUserRepository {
     return result;
   }
 
-  async patchUser(userEmail: string, newData: object): Promise<boolean> {
+  async patchUser(userEmail: string, newData: any): Promise<boolean> {
     this.setRepository();
     let result: boolean = true;
     let key = userEmail;
+    const newCnpj = {
+      companyCnpj: newData,
+    };
+
     if (userEmail.indexOf(':') !== -1) {
       const substring = userEmail.indexOf(':');
       const fh = userEmail.slice(0, substring);
@@ -70,11 +74,19 @@ export class UserRepository implements IUserRepository {
     }
     try {
       const aimedUser = await this.userRepository.findOneBy({ email: key });
-      await this.userRepository.update(aimedUser, newData);
+      console.log('Patch - user repo: ', aimedUser, newCnpj);
+      await this.userRepository.update(aimedUser, newCnpj);
     } catch (error) {
+      console.log(error);
       result = false;
     }
     return result;
+  }
+
+  async getAllUsers(): Promise<any> {
+    this.setRepository();
+    const allUsers = await this.userRepository.find();
+    return allUsers;
   }
 }
 

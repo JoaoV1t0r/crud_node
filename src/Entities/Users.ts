@@ -24,6 +24,9 @@ export class Users {
   @Column({ name: 'issuer', type: 'varchar', nullable: true })
   issuer: string;
 
+  @Column({ name: 'companyCnpj', type: 'varchar', nullable: true })
+  companyCnpj: string;
+
   constructor() {
     if (!this.uuid) {
       this.uuid = uuid();

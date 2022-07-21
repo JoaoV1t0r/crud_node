@@ -71,15 +71,15 @@ companiesRouter.post('/createCompany', async (req, res) => {
   }
 });
 
-companiesRouter.delete('/deleteCompany', async (req, res) => {
+companiesRouter.delete('/deleteCompany/:cnpj', async (req, res) => {
   try {
-    if ((await db.deleteCompany(req.body.cnpj)) === true) {
+    if ((await db.deleteCompany(req.params.cnpj)) === true) {
       return res
         .json({
           message: 'Sucess at /deleteCompany',
         })
         .status(200);
-    } else if ((await db.deleteCompany(req.body.cnpj)) === false) {
+    } else if ((await db.deleteCompany(req.params.cnpj)) === false) {
       return res
         .json({
           message: 'Error at /deleteCompany. ',
@@ -97,15 +97,16 @@ companiesRouter.delete('/deleteCompany', async (req, res) => {
 });
 
 companiesRouter.put('/patchCompany', async (req, res) => {
+  console.log('patch router:', req.body);
   try {
-    if ((await db.patchCompany(req.body.cnpj, req.body.companyData)) === true) {
+    if ((await db.patchCompany(req.body.cnpj, req.body.companyData.name)) === true) {
       return res
         .json({
           message: 'Sucess at /patchCompany',
           dataInserted: req.body.companyData,
         })
         .status(200);
-    } else if ((await db.patchCompany(req.body.cnpj, req.body.companyData)) === false) {
+    } else if ((await db.patchCompany(req.body.cnpj.empresa, req.body.name)) === false) {
       return res
         .json({
           message: 'Error at /patchCompany',

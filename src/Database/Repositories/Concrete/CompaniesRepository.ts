@@ -49,6 +49,7 @@ export class CompaniesRepository implements ICompaniesRepository {
     this.setRepository();
     let result: boolean = true;
     let key = cnpjCompany;
+    console.log(key);
     if (cnpjCompany.indexOf(':') !== -1) {
       const substring = cnpjCompany.indexOf(':');
       const fh = cnpjCompany.slice(0, substring);
@@ -64,8 +65,12 @@ export class CompaniesRepository implements ICompaniesRepository {
     return result;
   }
 
-  async patchCompany(cnpjCompany: string, newData: object): Promise<boolean> {
+  async patchCompany(cnpjCompany: string, newName: any): Promise<boolean> {
     this.setRepository();
+    console.log('patch repo: ', cnpjCompany, newName);
+    const newData = {
+      name: newName,
+    };
     let result: boolean = true;
     let key = cnpjCompany;
     if (cnpjCompany.indexOf(':') !== -1) {
@@ -76,6 +81,7 @@ export class CompaniesRepository implements ICompaniesRepository {
     }
     try {
       const aimedCompany = await this.companiesRepository.findOneBy({ cnpj: key });
+      console.log('Company: ', aimedCompany, newData);
       await this.companiesRepository.update(aimedCompany, newData);
     } catch (error) {
       console.log(error);

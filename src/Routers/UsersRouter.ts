@@ -44,7 +44,7 @@ passport.use(
       //console.log('profile: ', profile, '\nissuer: ', issuer);
       try {
         const user = await db.getUserByEmail(profile.emails[0].value);
-        console.log('Usuário encontrado: ', user);
+        //console.log('Usuário encontrado: ', user);
         if (!user) {
           await db.createUser({
             idOauth: profile.id,
@@ -65,20 +65,31 @@ passport.use(
 usersRouter.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000/accidents',
+    successRedirect: /*'/users/user'*/ 'http://localhost:3000/accidents',
     failureRedirect: '/auth/failure',
   }),
 );
 
+usersRouter.get('/getAllUsers', async (req, res) => {
+  console.log('request getallusers feito');
+  const users = await db.getAllUsers();
+  return res
+    .json({
+      users: users,
+    })
+    .status(200);
+});
+
 usersRouter.get('/logout', async (req, res) => {
   if (req.session !== null || undefined) {
     req.session.destroy(function (err) {
-      console.log(err);
+      console.log('Error no .destroy:', err);
     });
     console.log('Logout efetuado com sucesso.');
     res.send(`logout efetuado com sucesso, Session: ${req.session}`);
   }
 });
+
 usersRouter.get('/login', (req, res) => {
   res.send('<a href="auth/google">Autenticação com Google</a>');
 });
@@ -86,10 +97,53 @@ usersRouter.get('/login', (req, res) => {
 usersRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 usersRouter.get('/user', async (req, res) => {
-  if (req.session.passport.user !== undefined) {
-    const user = req.session.passport.user;
+  /*const user = req.session.passport.user;
+  res.send(user);*/
+  //res.send(req.session);
+  if (req.session.passport === undefined) {
+    console.log('Session: undefined');
+  } else if (req.session.passport !== undefined) {
+    //const user = req.session.passport.user;
+    console.log('Passport user = ', req.session.passport.user);
+    const databaseUser = await db.getUserByEmail(req.session.passport.user.emails[0].value);
+    const user = {
+      name: req.session.passport.user.name.givenName,
+      email: req.session.passport.user.emails[0].value,
+      password: databaseUser.password,
+      cnpj: databaseUser.companyCnpj,
+    };
+
     res.send(user);
   }
+
+  usersRouter.put('/patch/:email', async (req, res) => {
+    console.log('Router patchUser: ', req.params.email, req.body);
+    //await db.patchUser(req.params.email, req.body);
+    try {
+      if ((await db.patchUser(req.params.email, req.body.companyCnpj)) === true) {
+        return res
+          .json({
+            message: 'Sucess at /patchUser',
+            dataInserted: req.body,
+          })
+          .status(200);
+      } else if ((await db.patchUser(req.params.email, req.body.companyCnpj)) === false) {
+        return res
+          .json({
+            message: 'Error at /patchUser',
+          })
+          .status(404);
+      }
+    } catch (error) {
+      return res
+        .json({
+          message: 'Error at /patchUser',
+          error: error,
+        })
+        .status(404);
+    }
+  });
+
   return;
 });
 
@@ -116,7 +170,5 @@ usersRouter.get('/user', async (req, res) => {
 }); 
 
 */
-
-usersRouter.get('/getOneUser/:email', async (req, res) => {});
 
 export { usersRouter };

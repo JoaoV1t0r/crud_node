@@ -4,6 +4,7 @@ import { IDatasetsRepository } from '../Interfaces/IDatasetsRepository';
 import axios from 'axios';
 import multer from 'multer';
 import { AppDataSource } from '../../../../index';
+import cryptoJS from 'crypto-js';
 
 export class DatasetsRepository implements IDatasetsRepository {
   datasetsRepository: Repository<Datasets>;
@@ -54,10 +55,16 @@ export class DatasetsRepository implements IDatasetsRepository {
     const upload = multer({
       dest: './uploads/',
     });
+    /**
+     * Função pra criar um hash de integridade e enviar como parâmetro
+     * no checksum= na url na config abaixo
+     * placeholder: sha1
+     */
+    const hash = cryptoJS.SHA1(file);
 
     var config = {
       method: 'post',
-      url: ` https://fnxru22fhl.execute-api.us-east-1.amazonaws.com/dev/app/base/increment/${id}?checksum=bd4b53baff88b0586a2bd50c74bb5c308d84de70493f33b82ef53f8476634d5e`,
+      url: ` https://fnxru22fhl.execute-api.us-east-1.amazonaws.com/dev/app/base/increment/${id}?0checksum=${hash}`,
       headers: {
         'Content-Type': 'text/csv',
       },
